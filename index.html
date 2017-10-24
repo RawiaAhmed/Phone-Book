@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html ng-app="phoneBookApp">
+
+<head>
+    <title>Phone Book</title>
+    <link rel="stylesheet" href="index.css">
+    <script src="angular.min.js"></script>
+    <script src="index.js"></script>
+</head>
+
+<body>
+    <div class="container" ng-controller="PhoneBookCtrl">
+        <div>
+            <form name="addForm" novalidate>
+                <input name="name" type="text" ng-model="name" placeholder="Name" ng-class="{'error-input':name.length>10 || (submitted && addForm.name.$error.required)}" required/>
+                <input name="phone" type="text" ng-model="phone" placeholder="xx-xxx-xxxx" ng-class="{'error-input': addForm.phone.$error.pattern || (submitted && addForm.phone.$error.required)}" ng-pattern="phoneRegex" required />
+                <input name="email" type="text" ng-model="email" placeholder="Email" ng-class="{'error-input': addForm.email.$error.pattern || (submitted && addForm.email.$error.required)}" ng-pattern="emailRegex" required />
+                <button ng-click="submitted=true;myPhoneBook.add({name: name, phone: phone, email: email})">Add</button>
+            </form>
+        </div>
+        <br/>
+        <div>
+            <input type="text" ng-model="searchQuery" placeholder="Enter a query here">
+            <button ng-click="myPhoneBook.search(searchQuery)">Search</button>
+        </div>
+        <br/>
+        <div>
+            <input type="number" ng-model="index" placeholder="Phonebook index">
+            <button ng-click="myPhoneBook.remove(index)">Delete</button>
+        </div>
+        <br/>
+        <div class="phone-item" ng-repeat="item in myPhoneBook.phoneBookArray | filter:searchQuery">
+            <div>Name: {{item.name}}</div>
+            <div>Phone: {{item.phone}}</div>
+            <div>Email: {{item.email}}</div>
+        </div>
+    </div>
+
+</body>
+
+</html>
